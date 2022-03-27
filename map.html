@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Map</title>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script src="./index.js"></script>
+    <style>/* Set the size of the div element that contains the map */
+        
+        em {
+          color: orangered;
+          font: 100;
+        }
+
+        #map {
+          height: 400px;
+          /* The height is 400 pixels */
+          width: 100%;
+          /* The width is the width of the web page */
+        }</style>
+  </head>
+  <body>
+    <h3> Welcom to <em>Mapulance</em>!</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script>
+      function initMap(){
+        
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 15,
+        });
+        const locationButton = document.createElement("button");
+        locationButton.textContent = "Pan to Nearest hospital";
+        locationButton.classList.add("custom-map-control-button");
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+
+        if (navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(function(position){
+            currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            map.setCenter(currentLocation);
+            new google.maps.Marker({
+              position: currentLocation,
+              map: map
+            });
+          });
+        }
+      
+
+
+      }
+        
+      
+
+    </script>
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFf1zKgwr5DQF_ZatIzgWXp0iw55f2U7s&callback=initMap">
+</script>
+</body>
+</html>
