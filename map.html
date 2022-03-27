@@ -26,34 +26,46 @@
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script>
+      // function that creates an instance of the map. 
       function initMap(){
         
+        const infoWindow = new google.maps.InfoWindow(); //popup windo that indicates current location
+       
+        // Inital map with an inital zoom
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 15,
         });
-        const locationButton = document.createElement("button");
-        locationButton.textContent = "Pan to Nearest hospital";
-        locationButton.classList.add("custom-map-control-button");
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+        
+        // Button that allows user to see where the nearest hospital is
 
+        const hospitalButton = document.createElement("button");
+        hospitalButton.textContent = "Show Nearest Hospitals";
+        hospitalButton.classList.add("custom-map-control-button");
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+        
+        // Extracting current location (need to allow location tracking)
         if (navigator.geolocation){
           navigator.geolocation.getCurrentPosition(function(position){
             currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             map.setCenter(currentLocation);
-            new google.maps.Marker({
-              position: currentLocation,
-              map: map
-            });
+            
+            infoWindow.setPosition(currentLocation);
+            infoWindow.setContent("Current Location.");
+            infoWindow.open(map);
           });
         }
-      
+        service = new google.maps.places.PlaceService(map);
+        service.nearbySearch(request, callback);
+      }  
 
-
+      function callback(result, status){
+        if (status == google.maps.places.PlacesServiceStatus.OK){
+          for (var i = 0; i< result.length; i++){
+            createMarker(results[i]);
+          }
+        }
       }
-        
-      
-
-    </script>
+      </script>
     <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFf1zKgwr5DQF_ZatIzgWXp0iw55f2U7s&callback=initMap">
 </script>
