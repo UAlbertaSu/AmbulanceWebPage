@@ -41,7 +41,7 @@
         const hospitalButton = document.createElement("button");
         hospitalButton.textContent = "Show Nearest Hospitals";
         hospitalButton.classList.add("custom-map-control-button");
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(hospitalButton);
         
         // Extracting current location (need to allow location tracking)
         if (navigator.geolocation){
@@ -54,20 +54,10 @@
             infoWindow.open(map);
           });
         }
-        service = new google.maps.places.PlaceService(map);
-        service.nearbySearch(request, callback);
-      }  
-
-      function callback(result, status){
-        if (status == google.maps.places.PlacesServiceStatus.OK){
-          for (var i = 0; i< result.length; i++){
-            createMarker(results[i]);
-          }
-        }
       }
       </script>
     <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFf1zKgwr5DQF_ZatIzgWXp0iw55f2U7s&callback=initMap">
-</script>
-</body>
+    </script>
+  </body>
 </html>
